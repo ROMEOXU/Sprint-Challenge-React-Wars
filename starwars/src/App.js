@@ -11,19 +11,25 @@ const App = () => {
   // side effect in a component, you want to think about which state and/or props it should
   // sync up with, if any.
 const [data,setData] = useState([]);
-
+const [search, setSearch] = useState('');
+const [name,setName]= useState('rick')
   useEffect(()=>{
   const fetchData = async ()=>{
-    const result = await axios("https://rickandmortyapi.com/api/character/"
+    const result = await axios(`https://rickandmortyapi.com/api/character/?name=${search}`
       );
       console.log(result.data.results);
       setData(result.data.results)
   };
   fetchData();
-},[]);
+},[search]);
   return (
   <div>
     <h1>characters</h1>
+    <div className="search">
+    <input id='name'type='text' onChange={e=>setName(e.target.value)}/>
+    <button onClick={()=>setSearch(name)}>Search</button>
+    </div>
+    
     <div className='box'>
       
       {data.map(item=>(<Character item={item} key={item.id}/>))}
